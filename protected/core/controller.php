@@ -1,5 +1,7 @@
 <?php
-class Controller {
+
+class Controller
+{
 
     public $model;
 
@@ -13,4 +15,3 @@ class Controller {
 
     }
 }
-?>

@@ -1,14 +1,15 @@
 <?php
+
 class Route
 {
     private $q;
 
-    function __construct($q)
+    public function __construct($q)
     {
-        $this->q=$q;
+        $this->q = $q;
     }
 
-    function runController()
+    public function runController()
     {
         require_once 'protected/core/controller.php';
         try {
@@ -34,27 +35,18 @@ class Route
             $controllerPath = "protected/controllers/" . $controllerName . '.php';
             if (file_exists($controllerPath)) {
                 include $controllerPath;
-            }
-            else {
+            } else {
                 throw new Exception('Controller doesn`t exist');
             }
 
             $controller = new $controllerName;
             if (method_exists($controller, $actionName)) {
                 $controller->$actionName();
-            }
-            else {
+            } else {
                 throw new Exception('Action doesn`t exist');
             }
+        } catch (Exception $e) {
+            echo sprintf('Error (File: %s line %s: %s)', $e->getFile(), $e->getLine(), $e->getMessage());
         }
-        catch (Exception $e) {
-            echo "Error (File: ".$e->getFile().", line ".
-            $e->getLine()."): ".$e->getMessage();
-        }
-
     }
-
 }
-
-?>
-

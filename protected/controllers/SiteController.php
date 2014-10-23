@@ -1,4 +1,5 @@
 <?php
+
 class SiteController extends Controller
 {
     function indexAction()
@@ -13,5 +14,3 @@ class SiteController extends Controller
         echo 'Welcome to the ' . $a . ' page';
     }
 }
-
-?>
