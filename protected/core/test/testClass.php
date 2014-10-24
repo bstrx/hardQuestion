@@ -1,8 +1,8 @@
 <?php
+namespace core\test;
 
-class Controller
+class testClass
 {
-
     public $model;
 
     function __construct()
