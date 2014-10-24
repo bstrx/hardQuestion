@@ -1,4 +1,5 @@
 <?php
+namespace core;
 
 class Route
 {
@@ -11,7 +12,6 @@ class Route
 
     public function runController()
     {
-        require_once 'protected/core/controller.php';
         try {
             // default controller/action
             $controllerName = 'Site';
@@ -32,20 +32,15 @@ class Route
             $controllerName = mb_convert_case($controllerName, MB_CASE_TITLE, "UTF-8") . 'Controller';
             $actionName = strtolower($actionName) . 'Action';
 
-            $controllerPath = "protected/controllers/" . $controllerName . '.php';
-            if (file_exists($controllerPath)) {
-                include $controllerPath;
-            } else {
-                throw new Exception('Controller doesn`t exist');
-            }
+            $controllerName = 'controllers\\' . $controllerName;
 
             $controller = new $controllerName;
             if (method_exists($controller, $actionName)) {
                 $controller->$actionName();
             } else {
-                throw new Exception('Action doesn`t exist');
+                throw new \Exception('Action doesn`t exist');
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             echo sprintf('Error (File: %s line %s: %s)', $e->getFile(), $e->getLine(), $e->getMessage());
         }
     }
