@@ -1,7 +1,7 @@
 <?php
-namespace Autospace;
+namespace core;
 
-class myAutoload
+class Autoloader
 {
     /**
      * Registers autoloader
@@ -10,7 +10,7 @@ class myAutoload
      */
     public function register()
     {
-        if (!spl_autoload_register(__NAMESPACE__ . '\myAutoload::load')) {
+        if (!spl_autoload_register('core\Autoloader::load')) {
             throw new \Exception('Could not register ' . __NAMESPACE__ . '\'s class autoload function');
         }
     }
@@ -19,13 +19,13 @@ class myAutoload
     {
         $namespaces = explode('\\', $fullName);
         $className = array_pop($namespaces);
-        //var_dump($className); die();
         $basePath = $_SERVER['DOCUMENT_ROOT'] . '/protected/';
-        foreach ($namespaces as $k => $v) {
-            $basePath = $basePath . $v . '/';
+        foreach ($namespaces as $namespace) {
+            $basePath = $basePath . $namespace . '/';
         }
-        if (file_exists($basePath . str_replace('_', '/', $className) . '.php')) {
-            include_once($basePath . str_replace('_', '/', $className) . '.php');
+        $basePath = $basePath . str_replace('_', '/', $className) . '.php';
+        if (file_exists($basePath)) {
+            include_once($basePath);
         } else {
             throw new \Exception('There is no ' . $className . ' in that project');
         }
