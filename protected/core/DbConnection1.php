@@ -15,31 +15,39 @@ class DbConnection1
         'charset' => 'utf8'
     );
 
-    private function __construct($connect)
+    /**
+     * @param array $connect
+     */
+    private function __construct(array $connect)
     {
         $this->_connect = array_merge($this->_connect, $connect);
         try {
-            $this->_conn = new \PDO('mysql:host=' . $this->_connect['host'] . ';dbname=' . $this->_connect['name'] . ';port='
-                . $this->_connect['port'], $this->_connect['user'], $this->_connect['pass']);
+            $this->_conn = new \PDO('mysql:host=' . $this->_connect['host'] . ';dbname=' . $this->_connect['name'] .
+                ';port=' . $this->_connect['port'], $this->_connect['user'], $this->_connect['pass']);
             $this->_conn->exec("set names" . $this->_connect['charset']);
         } catch (\PDOException $e) {
             echo $e->getMessage();
         }
     }
 
+    /**
+     * do not allow cloning
+     */
     private function __clone()
     {
     }
 
+    /**
+     * do not allow wakeup
+     */
     private function __wakeup()
     {
     }
 
-    public function __destruct()
-    {
-        $this->_conn = NULL;
-    }
-
+    /**
+     * @param array $connect
+     * @return DbConnection1
+     */
     public static function getConnection($connect = array())
     {
         if (null === self::$_connection) {
@@ -48,18 +56,28 @@ class DbConnection1
         return self::$_connection;
     }
 
+    /**
+     * @param $sql
+     * @param array $params
+     * @return bool
+     */
     public function query($sql, $params = array())
     {
         return $this->_conn->prepare($sql)->execute($params);
     }
 
-    public function getAssoc($sql, $params = array())
+    /**
+     * @param $sql
+     * @param array $params
+     * @return array
+     */
+    public function getNum($sql, $params = array())
     {
         $result = array();
 
-        $sth = $this->_conn->prepare($sql);
-        $sth->execute($params);
-        while ($r = $sth->fetch(\PDO::FETCH_NUM)) {
+        $result_temp = $this->_conn->prepare($sql);
+        $result_temp->execute($params);
+        while ($r = $result_temp->fetch(\PDO::FETCH_NUM)) {
             $result[$r[0]] = $r[1];
         }
         return $result;

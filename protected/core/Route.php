@@ -5,6 +5,9 @@ class Route
 {
     private $q;
 
+    /**
+     * @param $q
+     */
     public function __construct($q)
     {
         $this->q = $q;

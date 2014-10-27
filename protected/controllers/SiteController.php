@@ -22,7 +22,7 @@ class SiteController extends Controller
 
         $db = DbConnection1::getConnection($config);
         $sql = "SELECT id,content FROM `test`";
-        $result = $db->getAssoc($sql);
+        $result = $db->getNum($sql);
 
         echo '<h2>Таблица тестов:</h2> <table border="1">';
         foreach ($result as $id => $content) {
