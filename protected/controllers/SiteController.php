@@ -1,8 +1,8 @@
 <?php
 namespace controllers;
 
-use core\Controller;
-use core\DbConnection1;
+use Core\Controller;
+use Core\DbConnection1;
 
 class SiteController extends Controller
 {
