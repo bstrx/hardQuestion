@@ -1,11 +1,8 @@
 <?php
-require_once 'protected/core/Autoloader.php';
-use core\Autoloader;
-use core\Route;
-
-$autoloader = new Autoloader();
-$autoloader->register();
+require_once 'vendor/autoload.php';
+use Core\Route;
 
 $q = trim($_GET['q'], "\/");
 $router = new Route($q);
 $router->runController();
+?>

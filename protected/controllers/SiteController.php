@@ -1,19 +1,19 @@
 <?php
 namespace controllers;
 
-use core\Controller;
+use Core\Controller;
 
 class SiteController extends Controller
 {
     function indexAction()
     {
-        $a = 'index';
-        echo 'Welcome to the ' . $a . ' page';
+        $sql = "SELECT id,content FROM `test`";
+        $tests = $this->getConnection()->getNum($sql);
+        echo $this->twig->render('site/index.html', array('tests' => $tests));
     }
 
     function anotherAction()
     {
-        $a = 'another';
-        echo 'Welcome to the ' . $a . ' page';
+        echo $this->twig->render('site/another.html');
     }
 }
