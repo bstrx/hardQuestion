@@ -2,38 +2,18 @@
 namespace controllers;
 
 use Core\Controller;
-use Core\DbConnection1;
 
 class SiteController extends Controller
 {
     function indexAction()
     {
-        $a = 'index';
-        echo 'Welcome to the ' . $a . ' page';
-
-        $config = array(
-            'host' => 'localhost',
-            'user' => 'root',
-            'port' => '3306',
-            'pass' => '12071990',
-            'name' => 'hardquestion',
-            'charset' => 'utf8'
-        );
-
-        $db = DbConnection1::getConnection($config);
         $sql = "SELECT id,content FROM `test`";
-        $result = $db->getNum($sql);
-
-        echo '<h2>Таблица тестов:</h2> <table border="1">';
-        foreach ($result as $id => $content) {
-            echo '<tr><td>' . $id . '</td><td>' . $content . '</td><tr>';
-        }
-        echo '</table>';
+        $tests = $this->getConnection()->getNum($sql);
+        echo $this->twig->render('site/index.html', array('tests' => $tests));
     }
 
     function anotherAction()
     {
-        $a = 'another';
-        echo 'Welcome to the ' . $a . ' page';
+        echo $this->twig->render('site/another.html');
     }
 }

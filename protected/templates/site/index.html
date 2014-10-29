@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Добро пожаловать в hardquestion{% endblock %}
+
+{% block content %}
+<h1>Добро пожаловать в hardquestion</h1>
+
+<div id="tests">
+    {% for key, test in tests %}
+    <div class="test">
+        <strong>{{key}}</strong>. "<em>{{test}}"</em>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -6,24 +6,24 @@ class DbConnection1
     private static $_connection;
     private $_conn;
 
-    private $_connect = array(
+    private $_connect =  array(
         'host' => 'localhost',
-        'port' => '3306',
         'user' => 'root',
-        'pass' => '',
-        'name' => '',
+        'port' => '3306',
+        'pass' => '12071990',
+        'name' => 'hardquestion',
         'charset' => 'utf8'
-    );
-
+        );
     /**
-     * @param array $connect
+     *
      */
-    private function __construct(array $connect)
+    private function __construct()
     {
-        $this->_connect = array_merge($this->_connect, $connect);
+        $this->_connect = array_merge($this->_connect);
         try {
-            $this->_conn = new \PDO('mysql:host=' . $this->_connect['host'] . ';dbname=' . $this->_connect['name'] .
-                ';port=' . $this->_connect['port'], $this->_connect['user'], $this->_connect['pass']);
+            $conn_string='mysql:host=' . $this->_connect['host'] . ';dbname=' . $this->_connect['name'] .
+                ';port=' . $this->_connect['port'];
+            $this->_conn = new \PDO($conn_string, $this->_connect['user'], $this->_connect['pass']);
             $this->_conn->exec("set names" . $this->_connect['charset']);
         } catch (\PDOException $e) {
             echo $e->getMessage();
@@ -45,13 +45,13 @@ class DbConnection1
     }
 
     /**
-     * @param array $connect
+     *
      * @return DbConnection1
      */
-    public static function getConnection($connect = array())
+    public static function getConnection()
     {
         if (null === self::$_connection) {
-            self::$_connection = new self($connect);
+            self::$_connection = new self();
         }
         return self::$_connection;
     }
