@@ -2,6 +2,7 @@
 namespace controllers;
 
 use Core\Controller;
+use models\User;
 
 class SiteController extends Controller
 {
@@ -14,6 +15,8 @@ class SiteController extends Controller
 
     function anotherAction()
     {
-        echo $this->twig->render('site/another.html');
+        $user = new User();
+        $users = $user->findall();
+        echo $this->twig->render('site/another.html', array('users' => $users));
     }
 }

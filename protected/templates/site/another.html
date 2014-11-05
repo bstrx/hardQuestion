@@ -4,5 +4,11 @@
 
 {% block content %}
 <h1>Другая страница</h1>
-
+<p>
+    {% for key, user in users %}
+<div class="user">
+    <strong>{{user.id}}) {{user.firstName}} {{user.lastName}} - {{user.createdDate}}</strong>
+</div>
+{% endfor %}
+</p>
 {% endblock %}

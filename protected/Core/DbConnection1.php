@@ -6,14 +6,15 @@ class DbConnection1
     private static $_connection;
     private $_conn;
 
-    private $_connect =  array(
+    private $_connect = array(
         'host' => 'localhost',
         'user' => 'root',
         'port' => '3306',
         'pass' => '12071990',
         'name' => 'hardquestion',
         'charset' => 'utf8'
-        );
+    );
+
     /**
      *
      */
@@ -21,7 +22,7 @@ class DbConnection1
     {
         $this->_connect = array_merge($this->_connect);
         try {
-            $conn_string='mysql:host=' . $this->_connect['host'] . ';dbname=' . $this->_connect['name'] .
+            $conn_string = 'mysql:host=' . $this->_connect['host'] . ';dbname=' . $this->_connect['name'] .
                 ';port=' . $this->_connect['port'];
             $this->_conn = new \PDO($conn_string, $this->_connect['user'], $this->_connect['pass']);
             $this->_conn->exec("set names" . $this->_connect['charset']);
@@ -80,6 +81,20 @@ class DbConnection1
         while ($r = $result_temp->fetch(\PDO::FETCH_NUM)) {
             $result[$r[0]] = $r[1];
         }
+        return $result;
+    }
+
+    /**
+     * @param $sql
+     * @param array $params
+     * @return array
+     */
+    public function getAssoc($sql, $params = array())
+    {
+        $result = array();
+        $result_temp = $this->_conn->prepare($sql);
+        $result_temp->execute($params);
+        $result = $result_temp->fetchAll(\PDO::FETCH_ASSOC);
         return $result;
     }
 }
