@@ -15,8 +15,7 @@ class SiteController extends Controller
 
     function anotherAction()
     {
-        $user = new User();
-        $users = $user->findall();
+        $users = User::findall();
         echo $this->twig->render('site/another.html', array('users' => $users));
     }
 }

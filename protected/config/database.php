@@ -1,16 +1,13 @@
 <?php
+
 /**
- * Created by PhpStorm.
- * User: julia
- * Date: 30.10.14
- * Time: 12:31
- *
+ * Class Configuration
  * It will used later
  */
 class Configuration{
-    static $db_host = 'localhost';
-    static $db_user = 'root';
-    static $db_password = '12071990';
-    static $db_name = 'hardquestion';
-    static $dbtype = 'mysql';
+    static $dbHost = 'localhost';
+    static $dbUser = 'root';
+    static $dbPassword = '12071990';
+    static $dbName = 'hardquestion';
+    static $dbType = 'mysql';
 }

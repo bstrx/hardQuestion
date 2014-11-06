@@ -4,7 +4,7 @@ namespace Core;
 class DbConnection1
 {
     private static $_connection;
-    private $_conn;
+    private $_connections;
 
     private $_connect = array(
         'host' => 'localhost',
@@ -22,10 +22,10 @@ class DbConnection1
     {
         $this->_connect = array_merge($this->_connect);
         try {
-            $conn_string = 'mysql:host=' . $this->_connect['host'] . ';dbname=' . $this->_connect['name'] .
+            $connectionString = 'mysql:host=' . $this->_connect['host'] . ';dbname=' . $this->_connect['name'] .
                 ';port=' . $this->_connect['port'];
-            $this->_conn = new \PDO($conn_string, $this->_connect['user'], $this->_connect['pass']);
-            $this->_conn->exec("set names" . $this->_connect['charset']);
+            $this->_connections = new \PDO($connectionString, $this->_connect['user'], $this->_connect['pass']);
+            $this->_connections->exec("set names" . $this->_connect['charset']);
         } catch (\PDOException $e) {
             echo $e->getMessage();
         }
@@ -64,7 +64,7 @@ class DbConnection1
      */
     public function query($sql, $params = array())
     {
-        return $this->_conn->prepare($sql)->execute($params);
+        return $this->_connections->prepare($sql)->execute($params);
     }
 
     /**
@@ -76,9 +76,9 @@ class DbConnection1
     {
         $result = array();
 
-        $result_temp = $this->_conn->prepare($sql);
-        $result_temp->execute($params);
-        while ($r = $result_temp->fetch(\PDO::FETCH_NUM)) {
+        $resultTemp = $this->_connections->prepare($sql);
+        $resultTemp->execute($params);
+        while ($r = $resultTemp->fetch(\PDO::FETCH_NUM)) {
             $result[$r[0]] = $r[1];
         }
         return $result;
@@ -92,9 +92,9 @@ class DbConnection1
     public function getAssoc($sql, $params = array())
     {
         $result = array();
-        $result_temp = $this->_conn->prepare($sql);
-        $result_temp->execute($params);
-        $result = $result_temp->fetchAll(\PDO::FETCH_ASSOC);
+        $result = $this->_connections->prepare($sql);
+        $result->execute($params);
+        $result = $result->fetchAll(\PDO::FETCH_ASSOC);
         return $result;
     }
 }

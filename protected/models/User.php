@@ -23,7 +23,9 @@ class User /*extends ActiveRecord */
 
     public function save()
     {
-        var_dump($this);
+        $date = new \DateTime();
+        $date = $date->format('Y-m-d');
+        var_dump($date);
         $sql = "INSERT INTO " . $this::$tableName . " VALUES ";
         die('save');
     }
@@ -38,9 +40,9 @@ class User /*extends ActiveRecord */
 
     }
 
-    public function findall()
+    public static function findall()
     {
-        $sql = 'SELECT * FROM ' . $this::$tableName;
+        $sql = 'SELECT * FROM ' . self::$tableName;
         $connection = DbConnection1::getConnection();
         $result = $connection->getAssoc($sql);
         return $result;
