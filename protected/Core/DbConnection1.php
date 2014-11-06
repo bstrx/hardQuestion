@@ -1,5 +1,6 @@
 <?php
 namespace Core;
+use config\Configuration;
 
 class DbConnection1
 {
@@ -64,7 +65,9 @@ class DbConnection1
      */
     public function query($sql, $params = array())
     {
-        return $this->_connections->prepare($sql)->execute($params);
+        $result = $this->_connections->prepare($sql);
+        $result->execute($params);
+        return $result;
     }
 
     /**
@@ -75,11 +78,9 @@ class DbConnection1
     public function getNum($sql, $params = array())
     {
         $result = array();
-
-        $resultTemp = $this->_connections->prepare($sql);
-        $resultTemp->execute($params);
-        while ($r = $resultTemp->fetch(\PDO::FETCH_NUM)) {
-            $result[$r[0]] = $r[1];
+        $r = $this->query($sql)->fetchAll(\PDO::FETCH_NUM);
+        foreach ($r as $res) {
+            $result[$res[0]] = $res[1];
         }
         return $result;
     }
@@ -91,9 +92,7 @@ class DbConnection1
      */
     public function getAssoc($sql, $params = array())
     {
-        $result = array();
-        $result = $this->_connections->prepare($sql);
-        $result->execute($params);
+        $result = $this->query($sql);
         $result = $result->fetchAll(\PDO::FETCH_ASSOC);
         return $result;
     }
