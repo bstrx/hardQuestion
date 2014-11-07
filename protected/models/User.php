@@ -53,6 +53,8 @@ class User /*extends ActiveRecord */
             $sql = 'DELETE FROM ' . self::$tableName;
             $sql .= self::addWhere($conditions);
             return DbConnection1::getConnection()->query($sql);
+        }else {
+            return NULL;
         }
     }
 
@@ -80,7 +82,9 @@ class User /*extends ActiveRecord */
      */
     public static function find($conditions = array())
     {
-        $sql = self::selectUser($conditions);
+        $users = array();
+        $sql = 'SELECT * FROM ' . self::$tableName;
+        $sql .= self::addWhere($conditions);
         $result = DbConnection1::getConnection()->getAssoc($sql);
         $properties = self::getMapping();
         foreach ($result as $userInfo) {
@@ -97,9 +101,10 @@ class User /*extends ActiveRecord */
      * @param array $conditions
      * @return User
      */
-    public static function findOne($conditions = array())
+    public static function findOne($conditions)
     {
-        $sql = self::selectUser($conditions);
+        $sql = 'SELECT * FROM ' . self::$tableName;
+        $sql .= self::addWhere($conditions);
         $sql .= ' LIMIT 1';
         $result = DbConnection1::getConnection()->getAssoc($sql);
         if (isset($result[0])) {
@@ -116,18 +121,7 @@ class User /*extends ActiveRecord */
      * @param array $conditions
      * @return string
      */
-    public static function selectUser($conditions = array())
-    {
-        $sql = 'SELECT * FROM ' . self::$tableName;
-        $sql .= self::addWhere($conditions);
-        return $sql;
-    }
-
-    /**
-     * @param array $conditions
-     * @return string
-     */
-    public static function addWhere($conditions = array())
+    public static function addWhere($conditions)
     {
         if (isset($conditions) and !empty($conditions)) {
             $sql = ' WHERE ';
@@ -136,6 +130,8 @@ class User /*extends ActiveRecord */
             }
             $sql .= implode(' AND ', $condition);
             return $sql;
+        } else {
+            return NULL;
         }
     }
 }
