@@ -10,5 +10,6 @@ class Configuration{
     static $dbPassword = '12071990';
     static $dbName = 'hardquestion';
     static $dbType = 'mysql';
-    static $dbPort= '3306';
+    static $dbPort = '3306';
+    static $dbCharset = 'utf8';
 }

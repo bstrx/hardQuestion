@@ -6,9 +6,9 @@
 <h1>Добро пожаловать в hardquestion</h1>
 
 <div id="tests">
-    {% for key, test in tests %}
+    {% for test in tests %}
     <div class="test">
-        <strong>{{key}}</strong>. "<em>{{test}}"</em>
+        <strong>{{test.id}}</strong>. "<em>{{test.content}}"</em>
     </div>
     {% endfor %}
 </div>

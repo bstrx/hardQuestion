@@ -5,10 +5,22 @@
 {% block content %}
 <h1>Другая страница</h1>
 <p>
-    {% for user in users %}
+    {% if user is defined and user is not empty %}
 <div class="user">
-    <strong>{{user.id}}) {{user.firstName}} {{user.lastName}} - {{user.createdDate}}</strong>
+    <strong>{{user.id}}) {{user.name}} {{user.surname}} - {{user.date}}</strong>
+</div>
+{% else %}
+{% if users is defined and users is not empty %}
+{% for user in users %}
+<div class="user">
+    <strong>{{user.id}}) {{user.name}} {{user.surname}} - {{user.date}}</strong>
 </div>
 {% endfor %}
+{% else %}
+<div class="user">
+    <strong>Пользователи с заданными параметрами не найдены</strong>
+</div>
+{% endif %}
+{% endif %}
 </p>
 {% endblock %}

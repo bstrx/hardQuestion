@@ -75,21 +75,6 @@ class DbConnection1
      * @param array $params
      * @return array
      */
-    public function getNum($sql, $params = array())
-    {
-        $result = array();
-        $r = $this->query($sql)->fetchAll(\PDO::FETCH_NUM);
-        foreach ($r as $res) {
-            $result[$res[0]] = $res[1];
-        }
-        return $result;
-    }
-
-    /**
-     * @param $sql
-     * @param array $params
-     * @return array
-     */
     public function getAssoc($sql, $params = array())
     {
         $result = $this->query($sql);
