@@ -15,8 +15,7 @@ class SiteController extends Controller
 
     function anotherAction()
     {
-        $arr = array('firstName' => 'Vasiliy');
-        $users = User::find($arr);
+        $users = User::find(array('firstName' => 'Vasiliy'));
         echo $this->twig->render('site/another.html', array('users' => $users));
     }
 
@@ -30,9 +29,15 @@ class SiteController extends Controller
 
     function updateAction()
     {
-        $arr = array('lastName' => 'Einstein');
-        $user = User::findOne($arr);
-        $user->name = 'William';
+        $user = User::findOne(array('lastName' => 'Einstein'));
+        $user->name = 'Bruce';
         $user->update();
+    }
+
+    function deleteAction()
+    {
+        $users = User::delete(array('id' => '6'));
+        $users = User::find();
+        echo $this->twig->render('site/another.html', array('users' => $users));
     }
 }

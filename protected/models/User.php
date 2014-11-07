@@ -49,15 +49,11 @@ class User /*extends ActiveRecord */
      */
     public static function delete($conditions = array())
     {
-        $sql = 'DELETE FROM ' . self::$tableName;
-        if (isset($conditions)) {
-            $sql .= ' WHERE ';
-            foreach ($conditions as $key => $value) {
-                $condition[] = sprintf('%s = "%s"', $key, $value);
-            }
-            $sql .= implode(' AND ', $condition);
+        if (isset($conditions) and !empty($conditions)){
+            $sql = 'DELETE FROM ' . self::$tableName;
+            $sql .= self::addWhere($conditions);
+            return DbConnection1::getConnection()->query($sql);
         }
-        return DbConnection1::getConnection()->query($sql);
     }
 
     /**
@@ -72,7 +68,7 @@ class User /*extends ActiveRecord */
         $properties = $this->getMapping();
         $properties = array_flip($properties);
         foreach ($user as $field => $value) {
-            $sql .= $properties[$field] . " = '" . $value . "', ";
+            $sql .= sprintf('%s = "%s", ', $properties[$field], $value);
         }
         $sql = rtrim($sql, ", ") . " WHERE id=" . $id;
         return DbConnection1::getConnection()->query($sql);
@@ -87,9 +83,9 @@ class User /*extends ActiveRecord */
         $sql = self::selectUser($conditions);
         $result = DbConnection1::getConnection()->getAssoc($sql);
         $properties = self::getMapping();
-        foreach ($result as $usersArr) {
+        foreach ($result as $userInfo) {
             $user = new User();
-            foreach ($usersArr as $dbField => $value) {
+            foreach ($userInfo as $dbField => $value) {
                 $user->$properties[$dbField] = $value;
             }
             $users[] = $user;
@@ -123,13 +119,23 @@ class User /*extends ActiveRecord */
     public static function selectUser($conditions = array())
     {
         $sql = 'SELECT * FROM ' . self::$tableName;
-        if (isset($conditions)) {
-            $sql .= ' WHERE ';
+        $sql .= self::addWhere($conditions);
+        return $sql;
+    }
+
+    /**
+     * @param array $conditions
+     * @return string
+     */
+    public static function addWhere($conditions = array())
+    {
+        if (isset($conditions) and !empty($conditions)) {
+            $sql = ' WHERE ';
             foreach ($conditions as $key => $value) {
                 $condition[] = sprintf('%s = "%s"', $key, $value);
             }
             $sql .= implode(' AND ', $condition);
+            return $sql;
         }
-        return $sql;
     }
 }
