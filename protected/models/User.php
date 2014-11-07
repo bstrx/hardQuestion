@@ -2,24 +2,21 @@
 namespace models;
 
 use Core\DbConnection1;
+use Core\ActiveRecord;
 
-class User /*extends ActiveRecord */
+class User extends ActiveRecord
 {
-    public static $tableName = 'user';
+    protected static $tableName = 'user';
     public $id;
     public $name;
     public $surname;
     public $date;
-
-    public static function getMapping()
-    {
-        return array(
-            'id' => 'id',
+    protected static $mapping = array(
+        'id' => 'id',
             'firstName' => 'name',
             'lastName' => 'surname',
             'createdDate' => 'date',
         );
-    }
 
     /**
      * @return bool
@@ -78,27 +75,6 @@ class User /*extends ActiveRecord */
 
     /**
      * @param array $conditions
-     * @return array
-     */
-    public static function find($conditions = array())
-    {
-        $users = array();
-        $sql = 'SELECT * FROM ' . self::$tableName;
-        $sql .= self::addWhere($conditions);
-        $result = DbConnection1::getConnection()->getAssoc($sql);
-        $properties = self::getMapping();
-        foreach ($result as $userInfo) {
-            $user = new User();
-            foreach ($userInfo as $dbField => $value) {
-                $user->$properties[$dbField] = $value;
-            }
-            $users[] = $user;
-        }
-        return $users;
-    }
-
-    /**
-     * @param array $conditions
      * @return User
      */
     public static function findOne($conditions)
@@ -117,21 +93,4 @@ class User /*extends ActiveRecord */
         }
     }
 
-    /**
-     * @param array $conditions
-     * @return string
-     */
-    public static function addWhere($conditions)
-    {
-        if (isset($conditions) and !empty($conditions)) {
-            $sql = ' WHERE ';
-            foreach ($conditions as $key => $value) {
-                $condition[] = sprintf('%s = "%s"', $key, $value);
-            }
-            $sql .= implode(' AND ', $condition);
-            return $sql;
-        } else {
-            return NULL;
-        }
-    }
 }
