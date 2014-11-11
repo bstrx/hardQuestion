@@ -31,14 +31,14 @@ class SiteController extends Controller
     function updateAction()
     {
         $user = User::findOne(array('lastName' => 'Einstein'));
-        $user->name = 'Bruce';
+        $user->name = 'William Jr';
         $user->update();
+        echo $this->twig->render('site/another.html', array('user' => $user));
     }
 
     function deleteAction()
     {
-        $users = User::delete(array('id' => '6'));
-        $users = User::find();
+        $users = User::delete(array('id' => '5'));
         echo $this->twig->render('site/another.html', array('users' => $users));
     }
 }
