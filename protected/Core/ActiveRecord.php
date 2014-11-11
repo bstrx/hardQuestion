@@ -54,6 +54,7 @@ abstract class ActiveRecord
             return NULL;
         }
     }
+
     /**
      * @param $conditions
      * @return null|string
@@ -84,7 +85,7 @@ abstract class ActiveRecord
         $properties = static::$mapping;
         $properties = array_flip($properties);
         foreach ($result as $field => $value) {
-            if(isset($properties[$field])) {
+            if (isset($properties[$field])) {
                 $sql .= sprintf('%s = "%s", ', $properties[$field], $value);
             }
         }
@@ -107,7 +108,7 @@ abstract class ActiveRecord
         $keysUser = array_keys($result);
         $valuesResult = array_values($result);
         foreach ($keysUser as $key) {
-            if(isset($properties[$key])) {
+            if (isset($properties[$key])) {
                 $newKeys[] = $properties[$key];
             }
         }
@@ -121,7 +122,7 @@ abstract class ActiveRecord
      */
     public static function delete($conditions)
     {
-        if (isset($conditions) and !empty($conditions)){
+        if (isset($conditions) and !empty($conditions)) {
             $sql = 'DELETE FROM ' . static::$tableName;
             $sql .= self::addWhere($conditions);
             return DbConnection1::getConnection()->query($sql);

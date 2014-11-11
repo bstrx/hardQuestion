@@ -13,8 +13,8 @@ class User extends ActiveRecord
     public $date;
     protected static $mapping = array(
         'id' => 'id',
-            'firstName' => 'name',
-            'lastName' => 'surname',
-            'createdDate' => 'date',
-        );
+        'firstName' => 'name',
+        'lastName' => 'surname',
+        'createdDate' => 'date',
+    );
 }
