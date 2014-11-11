@@ -1,19 +1,21 @@
 <?php
 namespace Core;
+use config\Configuration;
 
 class DbConnection1
 {
     private static $_connection;
-    private $_conn;
+    private $_connections;
 
-    private $_connect =  array(
+    private $_connect = array(
         'host' => 'localhost',
         'user' => 'root',
         'port' => '3306',
         'pass' => '12071990',
         'name' => 'hardquestion',
         'charset' => 'utf8'
-        );
+    );
+
     /**
      *
      */
@@ -21,10 +23,10 @@ class DbConnection1
     {
         $this->_connect = array_merge($this->_connect);
         try {
-            $conn_string='mysql:host=' . $this->_connect['host'] . ';dbname=' . $this->_connect['name'] .
+            $connectionString = 'mysql:host=' . $this->_connect['host'] . ';dbname=' . $this->_connect['name'] .
                 ';port=' . $this->_connect['port'];
-            $this->_conn = new \PDO($conn_string, $this->_connect['user'], $this->_connect['pass']);
-            $this->_conn->exec("set names" . $this->_connect['charset']);
+            $this->_connections = new \PDO($connectionString, $this->_connect['user'], $this->_connect['pass']);
+            $this->_connections->exec("set names" . $this->_connect['charset']);
         } catch (\PDOException $e) {
             echo $e->getMessage();
         }
@@ -63,7 +65,9 @@ class DbConnection1
      */
     public function query($sql, $params = array())
     {
-        return $this->_conn->prepare($sql)->execute($params);
+        $result = $this->_connections->prepare($sql);
+        $result->execute($params);
+        return $result;
     }
 
     /**
@@ -71,15 +75,10 @@ class DbConnection1
      * @param array $params
      * @return array
      */
-    public function getNum($sql, $params = array())
+    public function getAssoc($sql, $params = array())
     {
-        $result = array();
-
-        $result_temp = $this->_conn->prepare($sql);
-        $result_temp->execute($params);
-        while ($r = $result_temp->fetch(\PDO::FETCH_NUM)) {
-            $result[$r[0]] = $r[1];
-        }
+        $result = $this->query($sql);
+        $result = $result->fetchAll(\PDO::FETCH_ASSOC);
         return $result;
     }
 }

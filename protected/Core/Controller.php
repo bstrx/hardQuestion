@@ -19,6 +19,9 @@ class Controller
 
     }
 
+    /**
+     * @return DbConnection1
+     */
     protected function getConnection()
     {
         return DbConnection1::getConnection();
